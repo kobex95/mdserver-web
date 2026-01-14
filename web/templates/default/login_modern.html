@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+<title>{{data['title']}}</title>
+<link rel="stylesheet" type="text/css" href="/static/layer/skin/default/layer.css?v={{config.version}}">
+<link rel="stylesheet" type="text/css" href="/static/css/login-modern.css?v={{config.version}}">
+<style type="text/css">
+/* 自定义动画粒子 */
+.particle:nth-child(1) { left: 10%; animation-delay: 0s; width: 4px; height: 4px; }
+.particle:nth-child(2) { left: 20%; animation-delay: 2s; width: 6px; height: 6px; }
+.particle:nth-child(3) { left: 30%; animation-delay: 4s; width: 3px; height: 3px; }
+.particle:nth-child(4) { left: 40%; animation-delay: 1s; width: 5px; height: 5px; }
+.particle:nth-child(5) { left: 50%; animation-delay: 3s; width: 4px; height: 4px; }
+.particle:nth-child(6) { left: 60%; animation-delay: 5s; width: 6px; height: 6px; }
+.particle:nth-child(7) { left: 70%; animation-delay: 2s; width: 3px; height: 3px; }
+.particle:nth-child(8) { left: 80%; animation-delay: 4s; width: 5px; height: 5px; }
+.particle:nth-child(9) { left: 90%; animation-delay: 1s; width: 4px; height: 4px; }
+</style>
+</head>
+<body>
+<!-- 背景粒子效果 -->
+<div class="particles">
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+</div>
+
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-logo">
+      <h1>{{data['title']}}</h1>
+      <p>新一代Linux服务器管理面板</p>
+    </div>
+    
+    <form class="login-form" method="post" action="/login" onsubmit="return false;">
+      <div class="form-group">
+        <label for="username">用户名</label>
+        <div style="position: relative;">
+          <input type="text" id="username" name="username" class="login-input" placeholder="请输入用户名" autocomplete="off" required>
+          <span class="input-icon">👤</span>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">密码</label>
+        <div style="position: relative;">
+          <input type="password" id="password" name="password" class="login-input" placeholder="请输入密码" required>
+          <span class="input-icon">🔒</span>
+        </div>
+      </div>
+      
+      {% if session['code'] %}
+      <div class="form-group captcha-group">
+        <label for="code">验证码</label>
+        <div class="captcha-container">
+          <div style="position: relative; flex: 1;">
+            <input type="text" id="code" name="code" class="login-input captcha-input" placeholder="请输入验证码" maxlength="4" required>
+            <span class="input-icon">🛡️</span>
+          </div>
+          <img id="captcha-img" class="captcha-image" src="/code" onclick="refreshCaptcha()" title="点击刷新验证码">
+        </div>
+      </div>
+      {% endif %}
+      
+      <div class="error-message" id="error-message"></div>
+      
+      <button type="submit" class="login-button" id="login-button">
+        <span class="button-text">登录系统</span>
+      </button>
+    </form>
+    
+    <div class="forgot-password">
+      <a href="//github.com/midoks/mdserver-web/wiki/%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9" target="_blank">忘记密码？</a>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="/static/js/jquery-1.10.2.min.js?v={{config.version}}"></script>
+<script src="/static/language/zh-cn.js?v={{config.version}}"></script>
+<script src="/static/language/Simplified_Chinese/lan.js?v={{config.version}}"></script>
+<script src="/static/layer/layer.js?v={{config.version}}"></script>
+<script type="text/javascript">
+$(function(){
+  // 表单验证和提交
+  $('.login-form').on('submit', function(e){
+    e.preventDefault();
+    handleLogin();
+  });
+  
+  // 回车键提交
+  $('.login-input').on('keypress', function(e){
+    if(e.which === 13) {
+      handleLogin();
+    }
+  });
+  
+  // 输入框焦点效果
+  $('.login-input').on('focus', function(){
+    $(this).closest('.form-group').removeClass('error success');
+    $('#error-message').removeClass('show');
+  });
+});
+
+function handleLogin(){
+  const username = $('#username').val().trim();
+  const password = $('#password').val().trim();
+  const code = $('#code').val().trim();
+  
+  // 基础验证
+  if(!username || !password) {
+    showError('请输入用户名和密码');
+    return;
+  }
+  
+  if($('#code').length && !code) {
+    showError('请输入验证码');
+    return;
+  }
+  
+  // 显示加载状态
+  const button = $('#login-button');
+  const buttonText = $('.button-text');
+  button.addClass('loading');
+  buttonText.text('登录中...');
+  button.prop('disabled', true);
+  
+  // 提交登录请求
+  $.post('/do_login', {
+    username: encodeURIComponent(username),
+    password: encodeURIComponent(password),
+    code: code
+  }, function(response){
+    button.removeClass('loading');
+    buttonText.text('登录系统');
+    button.prop('disabled', false);
+    
+    if(response.status && response.status > 0) {
+      // 登录成功
+      if(response.status === 2) {
+        // 二次验证
+        handleTwoFactorAuth(username, password);
+      } else {
+        // 直接登录
+        showSuccess('登录成功，正在跳转...');
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
+      }
+    } else {
+      // 登录失败
+      showError(response.msg || '登录失败');
+      
+      // 刷新验证码
+      if(response.msg && response.msg.includes('验证码')) {
+        refreshCaptcha();
+        $('#code').val('').focus();
+      } else {
+        $('#password').val('').focus();
+      }
+      
+      // 清空表单状态
+      $('.form-group').removeClass('success error');
+    }
+  }, 'json').fail(function(){
+    button.removeClass('loading');
+    buttonText.text('登录系统');
+    button.prop('disabled', false);
+    showError('网络请求失败，请稍后重试');
+  });
+}
+
+function handleTwoFactorAuth(username, password){
+  layer.prompt({
+    formType: 3,
+    value: '',
+    title: '二步验证',
+    area: ['300px', '180px']
+  }, function(value, index, elem){
+    $.post('/verify_login', {
+      'auth': value,
+      'username': username,
+      'password': password
+    }, function(vdata){
+      if(vdata.status && vdata.status > 0){
+        layer.close(index);
+        showSuccess('验证成功，正在跳转...');
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
+      } else {
+        layer.msg(vdata.msg || '验证失败', {icon: 2});
+      }
+    }, 'json');
+  });
+}
+
+function showError(message){
+  const errorEl = $('#error-message');
+  errorEl.text(message).addClass('show');
+  
+  // 添加震动效果
+  $('.login-card').addClass('shake');
+  setTimeout(() => {
+    $('.login-card').removeClass('shake');
+  }, 500);
+  
+  // 3秒后自动隐藏
+  setTimeout(() => {
+    errorEl.removeClass('show');
+  }, 3000);
+}
+
+function showSuccess(message){
+  layer.msg(message, {icon: 1});
+}
+
+function refreshCaptcha(){
+  const captchaImg = $('#captcha-img');
+  const timestamp = new Date().getTime();
+  const src = captchaImg.attr('src').split('?')[0] + '?' + timestamp;
+  captchaImg.attr('src', src);
+  
+  // 添加刷新动画
+  captchaImg.css('transform', 'rotate(360deg)');
+  setTimeout(() => {
+    captchaImg.css('transform', '');
+  }, 500);
+}
+
+// 页面加载完成后的初始化
+$(document).ready(function(){
+  // 聚焦到第一个输入框
+  $('#username').focus();
+  
+  // 添加页面加载动画
+  $('body').css('opacity', '0');
+  setTimeout(() => {
+    $('body').animate({opacity: 1}, 800);
+  }, 100);
+});
+</script>
+</body>
+</html>

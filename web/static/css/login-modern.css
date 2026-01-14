@@ -1,0 +1,354 @@
+/*
+ * Modern Login Page Styles
+ * Version: 1.0.0
+ */
+
+:root {
+  --login-bg-start: #1a1f28;
+  --login-bg-end: #2c3e50;
+  --login-card-bg: #34495e;
+  --login-border: #3d566e;
+  --login-primary: #3498db;
+  --login-success: #2ecc71;
+  --login-input-bg: #2c3e50;
+  --login-text: #ecf0f1;
+  --login-text-secondary: #bdc3c7;
+}
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--login-bg-start) 0%, var(--login-bg-end) 100%);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 背景装饰元素 */
+.login-container:before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+  z-index: 0;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 登录卡片 */
+.login-card {
+  background: var(--login-card-bg);
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  border: 1px solid var(--login-border);
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(10px);
+  animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Logo样式 */
+.login-logo {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-logo h1 {
+  color: var(--login-text);
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 1px;
+  background: linear-gradient(45deg, var(--login-primary), #5dade2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-logo p {
+  color: var(--login-text-secondary);
+  margin: 8px 0 0 0;
+  font-size: 14px;
+}
+
+/* 表单组 */
+.form-group {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--login-text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 输入框样式 */
+.login-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--login-input-bg);
+  border: 2px solid var(--login-border);
+  border-radius: 10px;
+  color: var(--login-text);
+  font-size: 15px;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.login-input:focus {
+  border-color: var(--login-primary);
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+  background: #3d566e;
+}
+
+.login-input::placeholder {
+  color: #7f8c8d;
+}
+
+/* 验证码区域 */
+.captcha-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.captcha-input {
+  flex: 1;
+}
+
+.captcha-image {
+  width: 100px;
+  height: 42px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid var(--login-border);
+  transition: all 0.3s ease;
+}
+
+.captcha-image:hover {
+  border-color: var(--login-primary);
+  transform: scale(1.05);
+}
+
+/* 登录按钮 */
+.login-button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(45deg, var(--login-primary), #5dade2);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 加载状态 */
+.login-button.loading {
+  pointer-events: none;
+}
+
+.login-button.loading:after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin-left: -10px;
+  margin-top: -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 错误信息 */
+.error-message {
+  background: linear-gradient(45deg, #e74c3c, #c0392b);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+  font-size: 14px;
+  display: none;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.error-message.show {
+  display: block;
+}
+
+/* 忘记密码链接 */
+.forgot-password {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.forgot-password a {
+  color: var(--login-primary);
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.forgot-password a:hover {
+  color: #5dade2;
+  text-decoration: underline;
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 15px;
+  }
+  
+  .login-card {
+    padding: 30px 25px;
+    margin: 10px;
+  }
+  
+  .login-logo h1 {
+    font-size: 24px;
+  }
+  
+  .captcha-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .captcha-image {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+}
+
+/* 成功状态 */
+.form-group.success .login-input {
+  border-color: var(--login-success);
+  box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.2);
+}
+
+/* 错误状态 */
+.form-group.error .login-input {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.2);
+}
+
+/* 输入框图标 */
+.input-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--login-text-secondary);
+  transition: all 0.3s ease;
+}
+
+.form-group.success .input-icon {
+  color: var(--login-success);
+}
+
+.form-group.error .input-icon {
+  color: #e74c3c;
+}
+
+/* 背景粒子效果 */
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  background: rgba(52, 152, 219, 0.3);
+  border-radius: 50%;
+  animation: float 15s infinite linear;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) translateX(100px);
+    opacity: 0;
+  }
+}
+
+/* 暗黑模式适配 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --login-bg-start: #0d1117;
+    --login-bg-end: #161b22;
+    --login-card-bg: #1f2937;
+    --login-border: #374151;
+  }
+}

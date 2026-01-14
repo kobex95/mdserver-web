@@ -1,0 +1,548 @@
+/*
+ * mdserver-web Modern Theme
+ * Version: 1.0.0
+ * Author: Frontend Enhancement Team
+ */
+
+/* ==================== 基础变量定义 ==================== */
+:root {
+  /* 主色调 */
+  --primary-color: #3498db;
+  --primary-dark: #2980b9;
+  --primary-light: #5dade2;
+  
+  /* 状态颜色 */
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
+  --info-color: #3498db;
+  
+  /* 灰度色系 */
+  --dark-bg: #1a1f28;
+  --sidebar-bg: #2c3138;
+  --card-bg: #2c3e50;
+  --content-bg: #34495e;
+  --border-color: #3d566e;
+  
+  /* 文字颜色 */
+  --text-primary: #ecf0f1;
+  --text-secondary: #bdc3c7;
+  --text-muted: #95a5a6;
+  --text-dark: #2c3e50;
+  
+  /* 间距尺寸 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* 圆角 */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  
+  /* 阴影 */
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
+  --shadow-lg: 0 8px 16px rgba(0,0,0,0.2);
+  
+  /* 过渡动画 */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* ==================== 重置和基础样式 ==================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', 'Microsoft YaHei', Arial, sans-serif;
+  background-color: var(--dark-bg);
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  transition: background-color var(--transition-normal);
+}
+
+/* ==================== 布局容器 ==================== */
+.bt-warp {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--dark-bg) 0%, #1e2a38 100%);
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  transition: margin-left var(--transition-normal);
+  padding: var(--spacing-md);
+}
+
+/* ==================== 侧边栏样式 ==================== */
+.sidebar-scroll {
+  width: 250px;
+  background: linear-gradient(180deg, var(--sidebar-bg) 0%, #1e272e 100%);
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  transition: all var(--transition-normal);
+}
+
+.sidebar-auto {
+  padding: var(--spacing-md);
+}
+
+/* 任务提醒图标 */
+.task {
+  background: linear-gradient(45deg, var(--warning-color), #f1c40f);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-fast);
+}
+
+.task:hover {
+  transform: scale(1.1);
+}
+
+.mypcip {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-sm);
+  background: rgba(255,255,255,0.1);
+  border-radius: var(--border-radius-md);
+}
+
+/* 菜单样式 */
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu li {
+  margin-bottom: var(--spacing-xs);
+}
+
+.menu a {
+  display: block;
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: var(--border-radius-md);
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.menu a:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary-color);
+  transform: scaleY(0);
+  transition: transform var(--transition-fast);
+}
+
+.menu a:hover,
+.menu a.active {
+  background: rgba(52, 152, 219, 0.15);
+  color: var(--text-primary);
+  transform: translateX(5px);
+}
+
+.menu a:hover:before,
+.menu a.active:before {
+  transform: scaleY(1);
+}
+
+/* ==================== 头部信息栏 ==================== */
+.index-pos-box {
+  background: var(--card-bg);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.position {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.ico-system {
+  background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+}
+
+/* ==================== 卡片组件 ==================== */
+.bgw {
+  background: var(--card-bg) !important;
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: var(--shadow-md) !important;
+  border: 1px solid var(--border-color) !important;
+  transition: all var(--transition-normal);
+}
+
+.bgw:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.title {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ==================== 状态圆环图表 ==================== */
+.server-circle {
+  padding: var(--spacing-lg);
+}
+
+.circle-box {
+  transition: transform var(--transition-fast);
+}
+
+.circle-box:hover {
+  transform: scale(1.05);
+}
+
+.circle {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto var(--spacing-md);
+  position: relative;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--primary-color) 0deg, 
+    var(--primary-light) 120deg, 
+    var(--success-color) 240deg, 
+    var(--warning-color) 360deg
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle .mask {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  background: var(--card-bg);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+/* ==================== 按钮样式 ==================== */
+.btn {
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+  color: white;
+}
+
+.btn-success {
+  background: linear-gradient(45deg, var(--success-color), #27ae60);
+  color: white;
+}
+
+.btn-warning {
+  background: linear-gradient(45deg, var(--warning-color), #e67e22);
+  color: white;
+}
+
+.btn-danger {
+  background: linear-gradient(45deg, var(--danger-color), #c0392b);
+  color: white;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ==================== 表格样式 ==================== */
+.table {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+}
+
+.table th {
+  background: var(--content-bg);
+  padding: var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table td {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table tr:hover {
+  background: rgba(52, 152, 219, 0.1);
+}
+
+/* ==================== 表单元素 ==================== */
+.form-control {
+  background: var(--content-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  transition: all var(--transition-fast);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+/* ==================== 输入框组 ==================== */
+.input-group {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.input-group .form-control {
+  flex: 1;
+}
+
+/* ==================== 警告框样式 ==================== */
+.alert {
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+  border: none;
+}
+
+.alert-warning {
+  background: linear-gradient(45deg, #fef9e7, #fcf3cf);
+  color: #7d6608;
+  border-left: 4px solid var(--warning-color);
+}
+
+.alert-danger {
+  background: linear-gradient(45deg, #fadbd8, #f5b7b1);
+  color: #7b241c;
+  border-left: 4px solid var(--danger-color);
+}
+
+.alert-success {
+  background: linear-gradient(45deg, #d5f5e3, #abebc6);
+  color: #186a3b;
+  border-left: 4px solid var(--success-color);
+}
+
+/* ==================== 分页样式 ==================== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  margin: var(--spacing-lg) 0;
+}
+
+.pagination li {
+  list-style: none;
+}
+
+.pagination a,
+.pagination span {
+  display: block;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-fast);
+}
+
+.pagination a:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ==================== 图标样式 ==================== */
+.ico-up, .ico-down, .ico-read, .ico-write {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: var(--spacing-xs);
+  vertical-align: middle;
+}
+
+.ico-up {
+  background: linear-gradient(45deg, var(--success-color), #27ae60);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 14l5-5 5 5z'/%3E%3C/svg%3E");
+}
+
+.ico-down {
+  background: linear-gradient(45deg, var(--danger-color), #c0392b);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+}
+
+/* ==================== 响应式设计 ==================== */
+@media (max-width: 768px) {
+  .sidebar-scroll {
+    transform: translateX(-100%);
+    width: 220px;
+  }
+  
+  .sidebar-scroll.active {
+    transform: translateX(0);
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .circle {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .circle .mask {
+    width: 60px;
+    height: 60px;
+    font-size: 14px;
+  }
+  
+  .menu a {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 13px;
+  }
+}
+
+/* ==================== 动画效果 ==================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* ==================== 工具类 ==================== */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.mtb15 { margin: var(--spacing-md) 0; }
+.mtb20 { margin: var(--spacing-lg) 0; }
+.ptb15 { padding: var(--spacing-md) 0; }
+.ptb20 { padding: var(--spacing-lg) 0; }
+
+.plr15 { padding: 0 var(--spacing-md); }
+.plr20 { padding: 0 var(--spacing-lg); }
+
+.f12 { font-size: 12px; }
+.f14 { font-size: 14px; }
+.f15 { font-size: 15px; }
+.f16 { font-size: 16px; }
+.f18 { font-size: 18px; }
+.f20 { font-size: 20px; }
+
+.c3 { color: var(--text-primary); }
+.c6 { color: var(--text-secondary); }
+.c9 { color: var(--text-muted); }
+
+.radius4 { border-radius: var(--border-radius-md); }
+.radius8 { border-radius: var(--border-radius-lg); }
+
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+
+.transition-fast { transition: all var(--transition-fast); }
+.transition-normal { transition: all var(--transition-normal); }
+
+.cursor-pointer { cursor: pointer; }
+
+/* ==================== 滚动条样式 ==================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sidebar-bg);
+  border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: var(--border-radius-sm);
+  transition: background var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
+}

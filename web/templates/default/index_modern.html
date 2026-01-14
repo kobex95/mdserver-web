@@ -1,0 +1,421 @@
+{% extends "layout.html" %} {% block content %}
+<!-- 移动端菜单按钮 -->
+<button class="mobile-menu-toggle" id="mobileMenuToggle">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<div class="main-content">
+  <!-- 系统状态概览 -->
+  <div class="index-pos-box bgw fade-in-up">
+    <div class="position f12 c6 pull-left">
+      <span class="ico-system">系统:</span>
+      <span id="info" style="margin-left:10px;">正在获取系统信息...</span>
+      <span id="running" style="margin-left:20px;"></span>
+    </div>
+    <div class="pull-right" style="line-height:52px; margin-right:15px">
+      <span id="version" class="badge badge-primary" style="margin-right:10px">{{config.version}}</span>
+      <span id="toUpdate" class="desktop-only">
+        <a class="btn btn-sm btn-outline-primary" href="javascript:checkUpdate();">
+          <i class="icon icon-refresh"></i> 检查更新
+        </a>
+      </span>
+      <span style="margin:0 10px" class="desktop-only">
+        <a class="btn btn-sm btn-outline-warning" href="javascript:rePanel();">
+          <i class="icon icon-tools"></i> 系统修复
+        </a>
+      </span>
+      <span>
+        <a class="btn btn-sm btn-outline-danger" href="javascript:reBoot();">
+          <i class="icon icon-power"></i> 重启系统
+        </a>
+      </span>
+    </div>
+  </div>
+
+  <!-- 警告信息区域 -->
+  <div class="danger-tips">
+    <div class="alert alert-warning" id="messageError" style="display: none;">
+      <i class="icon icon-warning"></i>
+      <span class="alert-content"></span>
+      <button type="button" class="close" onclick="$(this).parent().hide()">
+        <span>&times;</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 系统状态监控 -->
+  <div class="server bgw mtb15 fade-in-up" style="animation-delay: 0.1s">
+    <div class="title c6 f16 plr15">
+      <h3 class="c6 f16 pull-left">
+        <i class="icon icon-monitor"></i> 系统状态监控
+      </h3>
+      <div class="pull-right desktop-only">
+        <span class="badge badge-success" id="systemStatus">正常运行</span>
+      </div>
+    </div>
+    <div class="server-circle">
+      <ul class="row" id="systemInfoList">
+        <!-- 负载状态 -->
+        <li class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mtb20 circle-box text-center" id="LoadList">
+          <h3 class="c5 f15">负载状态
+            <a href="https://github.com/midoks/mdserver-web/wiki#负载简述" 
+               target="_blank" 
+               class="bt-ico-ask" 
+               data-tooltip="点击查看负载说明"
+               data-placement="top"
+               style="cursor: pointer;">?</a>
+          </h3>
+          <div class="circle progress-circle" data-value="0" style="cursor: pointer;">
+            <div class="pie_left">
+              <div class="left"></div>
+            </div>
+            <div class="pie_right">
+              <div class="right"></div>
+            </div>
+            <div class="mask">
+              <span id="Load">0</span>%
+            </div>
+          </div>
+          <h4 id="LoadState" class="c5 f15">获取中...</h4>
+        </li>
+
+        <!-- CPU使用率 -->
+        <li class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mtb20 circle-box text-center" id="cpuChart">
+          <h3 class="c5 f15">CPU使用率</h3>
+          <div class="circle progress-circle" data-value="0">
+            <div class="pie_left">
+              <div class="left"></div>
+            </div>
+            <div class="pie_right">
+              <div class="right"></div>
+            </div>
+            <div class="mask">
+              <span id="state">0</span>%
+            </div>
+          </div>
+          <h4 id="core" class="c5 f15">获取中...</h4>
+        </li>
+
+        <!-- 内存使用率 -->
+        <li class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mtb20 circle-box text-center">
+          <h3 class="c5 f15">内存使用率</h3>
+          <div class="circle mem-release progress-circle" data-value="0">
+            <div class="pie_left">
+              <div class="left"></div>
+            </div>
+            <div class="pie_right">
+              <div class="right"></div>
+            </div>
+            <div class="mask">
+              <span id="left">0</span>%
+            </div>
+            <div class="mem-re-min" style="display: none;"></div>
+            <div class="mem-re-con" title=""></div>
+          </div>
+          <h4 id="memory" class="c5 f15">获取中...</h4>
+        </li>
+
+        <!-- 磁盘使用率 -->
+        <li class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mtb20 circle-box text-center">
+          <h3 class="c5 f15">磁盘使用率</h3>
+          <div class="circle progress-circle" data-value="0">
+            <div class="pie_left">
+              <div class="left"></div>
+            </div>
+            <div class="pie_right">
+              <div class="right"></div>
+            </div>
+            <div class="mask">
+              <span id="disk">0</span>%
+            </div>
+          </div>
+          <h4 id="diskInfo" class="c5 f15">获取中...</h4>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 系统概览 -->
+  <div class="conter-box system-info bgw clearfix mtb15 fade-in-up" style="animation-delay: 0.2s">
+    <div class="title c6 f16 plr15">
+      <h3 class="c6 f16 pull-left">
+        <i class="icon icon-dashboard"></i> 系统概览
+      </h3>
+    </div>
+    <div class="system-info-con mtb20">
+      <ul class="clearfix text-center" id='index_overview'>
+        <li class="sys-li-box col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <div class="overview-item">
+            <div class="overview-icon bg-primary">
+              <i class="icon icon-globe"></i>
+            </div>
+            <p class="name f15 c9">网站数量</p>
+            <div class="val">
+              <a class="btlink" href="/site/index">{{data['site_count']}}</a>
+            </div>
+          </div>
+        </li>
+        <li class="sys-li-box col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <div class="overview-item">
+            <div class="overview-icon bg-success">
+              <i class="icon icon-database"></i>
+            </div>
+            <p class="name f15 c9">数据库</p>
+            <div class="val">
+              <a class="btlink" href="/database/index">{{data['database_count']}}</a>
+            </div>
+          </div>
+        </li>
+        <li class="sys-li-box col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <div class="overview-item">
+            <div class="overview-icon bg-warning">
+              <i class="icon icon-user"></i>
+            </div>
+            <p class="name f15 c9">FTP账户</p>
+            <div class="val">
+              <a class="btlink" href="/ftp/index">{{data['ftp_count']}}</a>
+            </div>
+          </div>
+        </li>
+        <li class="sys-li-box col-xs-3 col-sm-3 col-md-3 col-lg-3">
+          <div class="overview-item">
+            <div class="overview-icon bg-info">
+              <i class="icon icon-plug"></i>
+            </div>
+            <p class="name f15 c9">已安装插件</p>
+            <div class="val">
+              <a class="btlink" href="/plugin/index">{{data['plugin_count']}}</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 软件管理和系统监控 -->
+  <div class="row fade-in-up" style="animation-delay: 0.3s">
+    <!-- 软件管理 -->
+    <div class="col-xs-12 col-sm-12 col-md-6">
+      <div class="pr8">
+        <div class="bgw">
+          <div class="title c6 f16 plr15">
+            <h3 class="c6 f16 pull-left">
+              <i class="icon icon-apps"></i> 软件管理
+            </h3>
+            <div class="pull-right">
+              <a href="/soft/index" class="btn btn-sm btn-primary">
+                <i class="icon icon-view-list"></i> 查看全部
+              </a>
+            </div>
+          </div>
+          <div class="setting-con" style="padding:0; height:442px; margin-right: -4px; overflow: hidden;">
+            <div class="container-fluid soft-man">
+              <input name="list1SortOrder" type="hidden" value="" />
+              <div id="indexsoft" class="row"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 系统监控 -->
+    <div class="col-xs-12 col-sm-12 col-md-6">
+      <div class="pl7">
+        <div class="bgw radius4" style="height:491px">
+          <div class="title c6 f16 plr15 tabs-nav">
+            <div class="tab-list">
+              <span class="tabs-item active" data-tab="network">
+                <i class="icon icon-network"></i> 网络流量
+              </span>
+              <span class="tabs-item" data-tab="diskio">
+                <i class="icon icon-storage"></i> 磁盘IO
+              </span>
+            </div>
+          </div>
+
+          <div class="tabs-content">
+            <!-- 网络流量监控 -->
+            <div class="tabs-active radius4 tabs-item" data-tab-content="network">
+              <div class="bw-info">
+                <div class="col-sm-6 col-md-3">
+                  <p class="c9">
+                    <span class="ico-up"></span>上行速率
+                  </p>
+                  <a id="upSpeed" class="traffic-value">0 KB/s</a>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <p class="c9">
+                    <span class="ico-down"></span>下行速率
+                  </p>
+                  <a id="downSpeed" class="traffic-value">0 KB/s</a>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <p class="c9">总发送量</p>
+                  <a id="upAll" class="traffic-value">0</a>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <p class="c9">总接收量</p>
+                  <a id="downAll" class="traffic-value">0</a>
+                </div>
+              </div>
+              <div id="netImg" style="width:100%;height:330px;"></div>
+            </div>
+
+            <!-- 磁盘IO监控 -->
+            <div class="radius4 tabs-item" data-tab-content="diskio">
+              <div class="bw-info">
+                <div class="col-sm-6 col-md-3">
+                  <p class="c9">
+                    <span class="ico-read"></span>读取速度
+                  </p>
+                  <a id="readBytes" class="io-value">0 KB/s</a>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <p class="c9">
+                    <span class="ico-write"></span>写入速度
+                  </p>
+                  <a id="writeBytes" class="io-value">0 KB/s</a>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <p class="c9">IOPS</p>
+                  <a id="diskIops" class="io-value">0</a>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <p class="c9">IO延迟</p>
+                  <a id="diskTime" class="io-value" style="color: rgb(46, 204, 113);">0 ms</a>
+                </div>
+              </div>
+              <div id="ioStat" style="width:100%;height:330px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="/static/app/site.js?v={{config.version}}"></script>
+<script type="text/javascript" src="/static/app/soft.js?v={{config.version}}"></script>
+<script type="text/javascript" src="/static/app/index.js?v={{config.version}}"></script>
+<script type="text/javascript">
+// 初始化现代UI功能
+$(document).ready(function() {
+  // 初始化移动端菜单
+  initMobileMenu();
+  
+  // 初始化标签页切换
+  initTabs();
+  
+  // 初始化圆形进度条动画
+  initProgressCircles();
+  
+  // 启动定时更新
+  startAutoRefresh();
+});
+
+function initMobileMenu() {
+  const toggleBtn = $('#mobileMenuToggle');
+  const sidebar = $('.sidebar-scroll');
+  
+  toggleBtn.on('click', function() {
+    $(this).toggleClass('active');
+    sidebar.toggleClass('active');
+    
+    // 点击外部关闭菜单
+    if (sidebar.hasClass('active')) {
+      $(document).one('click', function(e) {
+        if (!sidebar.is(e.target) && sidebar.has(e.target).length === 0 && 
+            !toggleBtn.is(e.target) && toggleBtn.has(e.target).length === 0) {
+          toggleBtn.removeClass('active');
+          sidebar.removeClass('active');
+        }
+      });
+    }
+  });
+}
+
+function initTabs() {
+  $('.tabs-item[data-tab]').on('click', function() {
+    const tabId = $(this).data('tab');
+    
+    // 更新激活状态
+    $('.tabs-item').removeClass('active');
+    $(this).addClass('active');
+    
+    // 显示对应内容
+    $('.tabs-item[data-tab-content]').removeClass('tabs-active');
+    $(`.tabs-item[data-tab-content="${tabId}"]`).addClass('tabs-active');
+  });
+}
+
+function initProgressCircles() {
+  // 为圆形进度条添加动画效果
+  $('.progress-circle').each(function() {
+    const $circle = $(this);
+    const value = parseFloat($circle.data('value')) || 0;
+    
+    // 根据数值设置颜色
+    let colorClass = 'success';
+    if (value > 80) colorClass = 'danger';
+    else if (value > 60) colorClass = 'warning';
+    
+    $circle.addClass(`circle-${colorClass}`);
+  });
+}
+
+function startAutoRefresh() {
+  // 每5秒更新一次系统信息
+  setInterval(function() {
+    refreshSystemInfo();
+  }, 5000);
+  
+  // 每30秒更新一次详细信息
+  setInterval(function() {
+    refreshDetailedInfo();
+  }, 30000);
+}
+
+function refreshSystemInfo() {
+  // 更新基本系统信息
+  if (typeof getInfo === 'function') {
+    getInfo();
+  }
+  
+  // 更新磁盘信息
+  if (typeof getDiskInfo === 'function') {
+    getDiskInfo();
+  }
+}
+
+function refreshDetailedInfo() {
+  // 更新软件列表
+  if (typeof indexSoft === 'function') {
+    indexSoft();
+  }
+  
+  // 更新关键数据统计
+  if (typeof loadKeyDataCount === 'function') {
+    loadKeyDataCount();
+  }
+}
+
+// 原有的初始化代码
+index.init();
+pluginInit();
+
+// 延迟执行一些初始化函数
+setTimeout(function() {
+  getDiskInfo();
+}, 500);
+
+setTimeout(function() {
+  indexSoft();
+}, 1000);
+
+setTimeout(function() {
+  getInfo();
+}, 200);
+</script>
+{% endblock %}

@@ -9,6 +9,10 @@
 <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
 <link href="/static/bootstrap-3.3.5/css/bootstrap.min.css?v={{config.version}}" rel="stylesheet">
 <link href="/static/css/site.css?v={{config.version}}" rel="stylesheet">
+<link href="/static/css/modern-theme.css?v={{config.version}}" rel="stylesheet">
+<link href="/static/css/modern-components.css?v={{config.version}}" rel="stylesheet">
+<link href="/static/css/mobile-responsive.css?v={{config.version}}" rel="stylesheet">
+<link href="/static/css/performance-optimization.css?v={{config.version}}" rel="stylesheet">
 <link href="/static/codemirror/lib/codemirror.css?v={{config.version}}" rel="stylesheet">
 <script src="/static/language/Simplified_Chinese/lan.js?v={{config.version}}"></script>
 <!--[if lte IE 9]>
@@ -159,6 +163,9 @@ if (thisPath.indexOf('?')>-1){
 <script src="/static/codemirror/addon/search/search.js?v={{config.version}}"></script>
 <script src="/static/codemirror/addon/scroll/annotatescrollbar.js?v={{config.version}}"></script>
 <script src="/static/laydate/laydate.js?v={{config.version}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+<script src="/static/js/modern-ui.js?v={{config.version}}"></script>
 
 {% for menu in data['hook_menu'] %}
 {% if menu['js_path'] and data['hook_tag'] == menu['name'] %}
@@ -173,30 +180,5 @@ if (thisPath.indexOf('?')>-1){
 {% endif %}
 {% endfor %}
 
-
-<!-- 统计一下用户量,让我的开发更有激情 -->
-<script type="text/javascript">
-$(document).ready(function(){
-    setTimeout(function(){
-        $.getScript('https://www.googletagmanager.com/gtag/js?id=G-FC74BB2RGD', function(){
-            console.log("load google ad!");
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-FC74BB2RGD');
-        });
-    },3000);
-});
-
-</script>
-
-<!-- Google tag (gtag.js) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-FC74BB2RGD"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-FC74BB2RGD');
-</script> -->
 
 </html>

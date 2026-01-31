@@ -215,16 +215,16 @@ if [ -f /tmp/dev.tar.gz ];then
 fi
 
 if [ -d /tmp/mdserver-web-dev ];then
-	rm -rf /tmp/mdserver-web-dev
+	rm -rf /tmp/mdserver-web-master
 fi
 
 echo "update mdserver-web dev code start"
 
-curl --insecure -sSLo /tmp/dev.tar.gz ${HTTP_PREFIX}github.com/midoks/mdserver-web/archive/refs/heads/dev.tar.gz
+curl --insecure -sSLo /tmp/dev.tar.gz ${HTTP_PREFIX}github.com/kobex95/mdserver-web/archive/refs/heads/master.tar.gz
 cd /tmp && tar -zxvf /tmp/dev.tar.gz
-$CP_CMD -rf /tmp/mdserver-web-dev/* /www/server/mdserver-web
+$CP_CMD -rf /tmp/mdserver-web-master/* /www/server/mdserver-web
 rm -rf /tmp/dev.tar.gz
-rm -rf /tmp/mdserver-web-dev
+rm -rf /tmp/mdserver-web-master
 
 echo "update mdserver-web dev code end"
 

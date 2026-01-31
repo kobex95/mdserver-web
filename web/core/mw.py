@@ -5,7 +5,7 @@
 # ---------------------------------------------------------------------------------
 # copyright (c) 2018-∞(https://github.com/midoks/mdserver-web) All rights reserved.
 # ---------------------------------------------------------------------------------
-# Author: midoks <midoks@163.com>
+
 # ---------------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------------
@@ -1794,7 +1794,7 @@ def processExists(pname, exe=None, cmdline=None):
 
 
 def createRsa():
-    # ssh-keygen -t rsa -P "" -C "midoks@163.com"
+    # ssh-keygen -t rsa -P "" -C "user@example.com"
     ssh_dir = getSshDir()
     # mw.execShell("rm -f /root/.ssh/*")
     if not os.path.exists(ssh_dir + '/authorized_keys'):

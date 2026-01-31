@@ -27,8 +27,7 @@
 
 基本上可以使用,后续会继续优化!欢迎提供意见！
 
-- 吹水组 - https://t.me/mdserver_web
-- 交流论坛 - https://bbs.midoks.icu
+
 
 ```
 如果出现问题，最好私给我面板信息。不要让我猜。如果不提供，不要提出问题，自行解决。  — 座右铭
@@ -38,9 +37,9 @@ Talk is cheap, show me the code.  -- linus
 - [兼容性测试报告](/compatibility.md)
 - [常用命令说明](/cmd.md) [ mw default ] [ mw dev ]
 
-### 特别赞助
+### 社区支持
 
-- [虚位以待](https://bbs.midoks.icu)
+- [虚位以待]
 
 ### 主要插件介绍
 
@@ -87,16 +86,16 @@ PHP[72-84]支持phpMyAdmin[5.2.1]
 
 # 郑重声明
 
-不卖、不会监控(统计使用除外)、更不会注入病毒,大家使用方便(望大家不吝捐赠)。
-
-- https://www.youtube.com/watch?v=2taa5K-Jmmw
+这是一个开源项目，欢迎大家贡献代码和完善功能。
 
 
-# AD - VPS推荐 - 🙏
 
-| 服务商			| 	LOGO   |  推广地址  | 优惠码 |
+
+# 合作伙伴 - 🙏
+
+| 服务商			|	LOGO   |  推广地址  | 优惠码 |
 | ------------- |----------|-----------|-------|
-| digitalvirt	|[![digitalvirt](https://digitalvirt.com/templates/BlueWhite/img/logo-dark.svg)](https://digitalvirt.com/aff.php?aff=154) | https://digitalvirt.com/aff.php?aff=154 | mdserver-web |
+| digitalvirt	|[![digitalvirt](https://digitalvirt.com/templates/BlueWhite/img/logo-dark.svg)](https://digitalvirt.com/aff.php?aff=154) | [链接已移除] | [优惠码已移除] |
 
 # Docker
 
@@ -205,14 +204,12 @@ mw update/mw update_dev/mw dev
 
 ### 捐赠地址 USDT（TRC20）
 
-TVbNgrpeGBGZVm5gTLa21ADP7RpnPFhjya
-
-日行一善，以后必定大富大贵
+[捐赠地址已移除]
 
 
-### 支付宝赞助
+### 社区捐赠
 
-[![截图](https://cdn.jsdelivr.net/gh/midoks/mdserver-web@latest/route/static/img/alipay_zz.png)](https://cdn.jsdelivr.net/gh/midoks/mdserver-web@latest/route/static/img/alipay_zz.png)
+[捐赠信息已移除]
 
 
 ### 无图不真相
@@ -227,7 +224,7 @@ TVbNgrpeGBGZVm5gTLa21ADP7RpnPFhjya
 
 ### 感谢开发赞助
 
-[![digitalvirt](https://digitalvirt.com/templates/BlueWhite/img/logo-dark.svg)](https://digitalvirt.com/aff.php?aff=154)
+[赞助商信息已移除]
 
 ### 授权许可
 
